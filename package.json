@@ -1,0 +1,32 @@
+{
+  "name": "cfn-vpc-interface",
+  "version": "1.0.3",
+  "description": "AWS CloudFormation Custom Lambda Resource | AWS VPC Interface Endpoint for Kiness",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "node ./node_modules/cfn-lambda/deploy.js --regions us-east-1 --logs --public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miketempleman/cfn-vpc-interface.git"
+  },
+  "keywords": [
+    "aws",
+    "cloudformation",
+    "lambda",
+    "backed",
+    "custom",
+    "resource",
+    "VPC",
+    "Kinesis",
+    "Endpoint"
+  ],
+  "author": "Michael Templeman <mike@talkingfrog.net> (https://github.com/miketempleman)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miketempleman/cfn-vpc-interface/issues"
+  },
+  "dependencies": {
+    "cfn-lambda": "2.1.1"
+  }
+}

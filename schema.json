@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": [
+    "ServiceName",
+    "VpcId",
+    "SecurityGroupIds",
+    "SubnetIds",
+    "VpcEndpointType"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "ServiceName": {
+      "type": "string"
+    },
+    "VpcId": {
+      "type": "string"
+    },
+    "SecurityGroupIds" : {
+        "type" : "array",
+        "items" : {
+             "type": "string",
+             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
+        }
+    },
+    "SubnetIds" : {
+        "type" : "array",
+        "items" : {
+             "type": "string",
+             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
+        }
+    },
+    "RouteTableIds" : {
+        "type" : "array",
+        "items" : {
+             "type": "string",
+             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
+        }
+    },
+   "PolicyDocument" : {
+        "type": "string"
+    },
+    "VpcEndpointType" : {
+        "type" : "string",
+        "enum" : [
+            "Interface",
+            "Gateway"
+        ]
+    }
+  }
+}
+    
+    "StreamViewType": {
+      "type": "string",
+      "enum": [
+        "NEW_IMAGE",
+        "OLD_IMAGE",
+        "NEW_AND_OLD_IMAGES",
+        "KEYS_ONLY"
+      ]
+    }
+  }
+}
