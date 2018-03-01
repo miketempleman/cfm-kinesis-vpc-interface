@@ -37,9 +37,6 @@
              "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
         }
     },
-   "PolicyDocument" : {
-        "type": "string"
-    },
     "VpcEndpointType" : {
         "type" : "string",
         "enum" : [
