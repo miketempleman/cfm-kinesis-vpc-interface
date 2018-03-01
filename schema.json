@@ -43,8 +43,7 @@
     "VpcEndpointType" : {
         "type" : "string",
         "enum" : [
-            "Interface",
-            "Gateway"
+            "Interface"
         ]
     }
   }
