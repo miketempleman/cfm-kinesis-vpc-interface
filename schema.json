@@ -30,13 +30,6 @@
              "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
         }
     },
-    "RouteTableIds" : {
-        "type" : "array",
-        "items" : {
-             "type": "string",
-             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
-        }
-    },
     "VpcEndpointType" : {
         "type" : "string",
         "enum" : [

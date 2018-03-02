@@ -6,6 +6,9 @@ var CfnLambda = require('cfn-lambda');
 
 function Create(params, reply) {
     console.log("Beginning create. Params="+JSON.stringify(params));
+    var thePolicy = JSON.stringify(params.PolicyDocument);
+    params.PolicyDocument = thePolicy;
+    console.log("updated create document:"+JSON.stringify(params));
     ec2.createVpcEndpoint(params, function(err, data) {
       if (err)  {
           console.log(err, err.stack); // an error occurred
@@ -21,23 +24,22 @@ var Update = function(physicalId, params, oldParams, reply) {
     console.log("Updating. Params="+JSON.stringify(params));
     Delete(physicalId, oldParams, reply);
     Create(params, reply);
-}
+};
 
 function Delete(physicalId, params, reply) {
     console.log("Beginning delete. Params="+JSON.stringify(params));
-    ec2.deleteVpcEndpoints(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack); // an error occurred
-            return reply(err);
-        } else {
-            console.log(data);           // successful response
-            return reply(null);
-        }
+    console.log("Physical id="+physicalId);
+    var p = {
+       "VpcEndpointIds" : [physicalId]
+    };
+    ec2.deleteVpcEndpoints(p, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        reply(err, physicalId);
     });
 }
 
 exports.handler = CfnLambda({
   Create: Create,
   Update: Update,
-  Delete: Delete,
+  Delete: Delete
 });
