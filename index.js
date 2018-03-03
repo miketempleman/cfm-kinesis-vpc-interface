@@ -1,24 +1,11 @@
+
 var AWS = require('aws-sdk')
+var CfnLambda = require('cfn-lambda');
+
 var ec2 = new AWS.EC2();
 
 var CfnLambda = require('cfn-lambda');
 
-
-function Create(params, reply) {
-    console.log("Beginning create. Params="+JSON.stringify(params));
-    var thePolicy = JSON.stringify(params.PolicyDocument);
-    params.PolicyDocument = thePolicy;
-    console.log("updated create document:"+JSON.stringify(params));
-    ec2.createVpcEndpoint(params, function(err, data) {
-      if (err)  {
-          console.log(err, err.stack); // an error occurred
-          return reply(err);
-       } else {
-            console.log(JSON.stringify(data));  // successful response
-            return reply(null, data.VpcEndpoint);
-       }
-    });
-}
 
 var Update = function(physicalId, params, oldParams, reply) {
     console.log("Updating. Params="+JSON.stringify(params));
@@ -26,21 +13,40 @@ var Update = function(physicalId, params, oldParams, reply) {
     Create(params, reply);
 };
 
-function Delete(physicalId, params, reply) {
-    console.log("Beginning delete. Params="+JSON.stringify(params));
-    console.log("Physical id="+physicalId);
-    var p = {
-       "VpcEndpointIds" : [physicalId]
-    };
-    ec2.deleteVpcEndpoints(p, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        reply(err, physicalId);
-    });
+var Create = CfnLambda.SDKAlias({
+  api: ec2,
+  method: 'createVpcEndpoint',
+  forceBools: BoolProperties,
+  forceNums: NumProperties,
+  keys: ['SubnetIds', 'VpcId', 'VpcEndpointType', 'SecurityGroupIds', 'ServiceName'],
+  returnPhysicalId: getPhysicalId
+});
+
+function getPhysicalId(data, params) {
+  return data.VpcEndpoint.VpcEndpointId
 }
+
+function getPhysicalIdDelete(data, params) {
+  return [data.VpcEndpointId]
+}
+var BoolProperties = [
+];
+
+var NumProperties = [
+];
+
+var Delete = CfnLambda.SDKAlias({
+  api: ec2,
+  method: 'deleteVpcEndpoints',
+  keys: 'VpcEndpointIds',
+  physicalIdAs: 'VpcEndpointIds', 
+  returnPhysicalId: getPhysicalIdDelete
+});
+
+
 
 exports.handler = CfnLambda({
   Create: Create,
   Update: Update,
-  Delete: Delete,
-  SchemaPath: [__dirname, 'schema.json']
+  Delete: Delete
 });

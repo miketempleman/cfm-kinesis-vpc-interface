@@ -8,7 +8,6 @@
     "SubnetIds",
     "VpcEndpointType"
   ],
-  "additionalProperties": false,
   "properties": {
     "ServiceName": {
       "type": "string"
@@ -20,14 +19,12 @@
         "type" : "array",
         "items" : {
              "type": "string",
-             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
         }
     },
     "SubnetIds" : {
         "type" : "array",
         "items" : {
              "type": "string",
-             "pattern" : "pattern": "^[a-z][a-z0-9\\-]+$"
         }
     },
     "VpcEndpointType" : {
