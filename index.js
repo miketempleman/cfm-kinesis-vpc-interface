@@ -14,7 +14,7 @@ function Create(params, reply) {
           console.log(err, err.stack); // an error occurred
           return reply(err);
        } else {
-            console.log(data);  // successful response
+            console.log(JSON.stringify(data));  // successful response
             return reply(null, data.VpcEndpoint);
        }
     });
@@ -41,5 +41,6 @@ function Delete(physicalId, params, reply) {
 exports.handler = CfnLambda({
   Create: Create,
   Update: Update,
-  Delete: Delete
+  Delete: Delete,
+  SchemaPath: [__dirname, 'schema.json']
 });
