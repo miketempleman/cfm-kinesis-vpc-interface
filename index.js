@@ -27,7 +27,9 @@ function getPhysicalId(data, params) {
 }
 
 function getPhysicalIdDelete(data, params) {
-  return [data.VpcEndpointId]
+  console.log("data = "+JSON.stringify(data));
+  console.log("params="+JSON.stringify(params));
+  return [data.VpcEndpointIds]
 }
 var BoolProperties = [
 ];
@@ -35,13 +37,25 @@ var BoolProperties = [
 var NumProperties = [
 ];
 
-var Delete = CfnLambda.SDKAlias({
-  api: ec2,
-  method: 'deleteVpcEndpoints',
-  keys: 'VpcEndpointIds',
-  physicalIdAs: 'VpcEndpointIds', 
-  returnPhysicalId: getPhysicalIdDelete
-});
+
+var Delete = function (physicalId, params, reply) {
+  console.log("physicalid ="+physicalId);
+  console.log("params="+JSON.stringify(params));
+  ec2.deleteVpcEndpoints({"VpcEndpointIds":[physicalId]}, function(error, data ) {
+    if (error && error.statusCode === 404) {
+        console.log("During delete endpoint '" + physicalIds + "' was not found. Implicit success assumed");
+        return reply();
+    }
+    
+    if (error) {
+      console.error("Error deleting '" + physicalId + "'. Delete failed");
+      return reply(error);
+    }
+    
+    console.log("Success deleting '" + physicalId +"'");
+    return reply();
+  });
+}
 
 
 
